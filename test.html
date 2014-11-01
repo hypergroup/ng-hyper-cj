@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+
+  </head>
+  <body data-ng-app="test">
+
+    <ul data-hyper=".users">
+      {{users}}
+      <li data-ng-repeat="user in users">
+        <h3 data-hyper-bind="user.given-name"></h3>
+      </li>
+    </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-mocks.js"></script>
+    <script src="./build/build.js"></script>
+
+    <script>
+      BROWSER_ENV = 'development';
+      require('ng-hyper');
+      var app = angular.module('test', ['ng-hyper', 'ng-hyper-cj']);
+      app.provider({
+        '$httpBackend': angular.mock.$HttpBackendProvider
+      });
+
+      var root = {
+        href: '/api',
+        username: 'Joe',
+        users: {href: '/api/users'}
+      };
+
+      var users = {
+        collection: {
+          version: '1.0',
+          items: [
+            {
+              href: '/api/users/123',
+              data: [
+                {name: 'given-name', value: 'Joe'}
+              ],
+              links: []
+            },
+            {
+              href: '/api/users/456',
+              data: [
+                {name: 'given-name', value: 'Mike'}
+              ],
+              links: []
+            },
+            {
+              href: '/api/users/789',
+              data: [
+                {name: 'given-name', value: 'Robert'}
+              ],
+              links: []
+            }
+          ]
+        }
+      }
+
+      app.run([
+        '$httpBackend',
+        function(http) {
+          http.whenGET('/api').respond(root);
+          http.whenGET('/api/users').respond(users, {'content-type': 'application/collection+json'});
+          setTimeout(function(){
+            http.flush();
+          }, 100);
+        }
+      ]);
+    </script>
+  </body>
+</html>

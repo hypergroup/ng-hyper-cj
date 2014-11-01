@@ -1,0 +1,20 @@
+{
+  "name": "ng-hyper-cj",
+  "repo": "hypergroup/ng-hyper-cj",
+  "description": "Collection+JSON extension to ng-hyper",
+  "version": "0.1.0",
+  "keywords": [],
+  "dependencies": {
+    "hypergroup/cj2hyper": "^0.1.0"
+  },
+  "development": {
+    "camshaft/component-angular": "*",
+    "hypergroup/ng-hyper": "*"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ],
+  "remotes": []
+}
